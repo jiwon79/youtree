@@ -1,4 +1,3 @@
-import { google } from "googleapis";
 import { SheetService } from "@/service/sheet";
 
 interface ExtendedRequest extends Request {

@@ -1,5 +1,4 @@
 import { google } from "googleapis";
-import { GoogleAuth } from "google-auth-library";
 
 export interface SheetResponse {
   status: number;
@@ -9,14 +8,18 @@ export interface SheetResponse {
 export class SheetService {
   private static instance: SheetService;
   private readonly sheet;
-  private readonly sheetId = process.env.NEXT_PUBLIC_GOOGLE_SPREADSHEET_ID;
+  private readonly sheetId: string = process.env.GOOGLE_SPREADSHEET_ID!;
 
   constructor() {
+    const client_id: string = process.env.GOOGLE_CLIENT_ID!;
+    const client_email: string = process.env.GOOGLE_CLIENT_EMAIL!;
+    const private_key: string = process.env.GOOGLE_PRIVATE_KEY!.replace(/\\n/g, '\n');
+
     const auth = new google.auth.GoogleAuth({
       credentials: {
-        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-        client_email: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_EMAIL,
-        private_key: process.env.NEXT_PUBLIC_GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+        client_id: client_id,
+        client_email: client_email,
+        private_key: private_key,
       },
       scopes: [
         'https://www.googleapis.com/auth/drive',
@@ -35,7 +38,7 @@ export class SheetService {
     return SheetService.instance;
   }
 
-  public async append(sheetName: string, range: string, values: string[][]): SheetResponse {
+  public async append(sheetName: string, range: string, values: string[][]): Promise<SheetResponse> {
     const resource = {values};
 
     const response = await this.sheet.spreadsheets.values.append({
