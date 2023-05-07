@@ -5,13 +5,12 @@ interface ExtendedRequest extends Request {
 }
 
 export const POST = async (request: ExtendedRequest) => {
-  console.log(process.env.GOOGLE_PRIVATE_KEY);
   const body = await request.json()
   const auth = new google.auth.GoogleAuth({
     credentials: {
-      client_id: process.env.GOOGLE_CLIENT_ID,
-      client_email: process.env.GOOGLE_CLIENT_EMAIL,
-      private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+      client_email: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_EMAIL,
+      private_key: process.env.NEXT_PUBLIC_GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
     },
     scopes: [
       'https://www.googleapis.com/auth/drive',
@@ -21,7 +20,7 @@ export const POST = async (request: ExtendedRequest) => {
   });
 
   const sheets = google.sheets({ version: "v4", auth });
-  const spreadSheetId = process.env.GOOGLE_SPREADSHEET_ID;
+  const spreadSheetId = process.env.NEXT_PUBLIC_GOOGLE_SPREADSHEET_ID;
 
   const values = [
     ["name", "email", "phone", "message"],
