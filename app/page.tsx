@@ -7,6 +7,14 @@ const inter = Inter({ subsets: ['latin'] })
 export default function Home() {
   return (
     <main className={styles.main}>
+      <Image
+        src="/asset/landing_main.svg"
+        width={411}
+        height={386}
+        alt={'Landing Main'}
+      />
+
+
       <div className={styles.description}>
         <p>
           Get started by editing&nbsp;
